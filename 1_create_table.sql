@@ -74,3 +74,31 @@ fields terminated by "\t";
 select * from t_partition where type='交通' and money > 50;
 
 select count(*) from t_partition where type='交通' and money > 50;
+
+select TYPE from t_partition GROUP BY TYPE;
+
+drop table t_partition_part;
+create table t_partition_part(
+    datetime string comment "日期",
+    pay_type string comment "类型",
+    type String comment "分类",
+    money double comment "金额",
+    desc string comment "备注"
+) comment "账单"
+    partitioned by (ty string)
+row format delimited
+fields terminated by "\t";
+
+select * from t_partition_part;
+
+
+select * from t_partition where type = '餐饮';
+select type from t_partition group by type;
+-- 22S
+select count(0) from t_partition where type = '日用' and money > 10;
+
+select * from t_partition_part;
+-- 静态分区
+load data local inpath '/home/xiang/txt/partition/Nene.txt' into table t_partition_part PARTITION (ty='Nene');
+
+
