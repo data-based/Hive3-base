@@ -69,3 +69,4 @@ create table t_team_ace_player(
 -- insert into t_team_ace_player(id,team_name,ace_player_name) values (1,'成都AG超玩会','一诺');
 
 select * from t_team_ace_player;
+
