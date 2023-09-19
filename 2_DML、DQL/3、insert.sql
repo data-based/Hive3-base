@@ -55,16 +55,10 @@ set hive.exec.dynamic.partition.mode = nonstrict;
 -- Directory 导出数据
 select * from t_student_hdfs;
 -- 导出数据到 HDFS：/data/hive/t_student_hdfs/e1
+-- 没有指定分隔符，默认 '/001'
 insert overwrite directory '/data/hive/t_student_hdfs/e1' select * from t_student_hdfs where city = '赣州';
 
-
-create table t_class(
-    id String,name String,buildNo String,buildRoom String,province String,highSchool String,city String,Country String,address String
-                      ) comment "17级三班信息" row format delimited fields terminated by ",";
+insert overwrite directory '/data/hive/t_student_hdfs/e2' row format delimited fields terminated by "," select * from t_class where city = '南昌';
 
 
-
-load data local inpath '/home/xiang/hive/soft' into table t_class;
-
-select * from t_class;
-select * from t_class where  Country = '信丰县';
+use test;

@@ -59,6 +59,6 @@ create table t_student_new3(id String,name String,politicStatus String,buildNo S
 -- 自动将文件最后一列作为分区列
 load data inpath '/data/hive/student_partition/student_all.txt' into table t_student_new3;
 select * from t_student_new3 where name = '刘云岑';
-select build,count(0) as cnt from t_student_new3 group by build
+select build,count(0) as cnt from t_student_new3 group by build;
 
 set hive.exec.dynamic.partition.mode;
