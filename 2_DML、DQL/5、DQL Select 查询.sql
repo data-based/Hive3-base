@@ -154,3 +154,6 @@ show create table v1;
 select * from s2;
 select * from s1;
 show create table s1;
+
+use test;
+show tables;
