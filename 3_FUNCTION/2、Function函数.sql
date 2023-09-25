@@ -96,4 +96,6 @@ select inline(array(struct('A',10,date '2015-01-01'),struct('B',20,date '2016-02
 
 show functions ;
 
+select a.team_name,year from the_nba_championship a lateral view explode(champion_year) b as year order by  year;
 
+show tables;
