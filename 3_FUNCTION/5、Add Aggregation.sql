@@ -117,35 +117,7 @@ UNION ALL
 SELECT NULL,day,COUNT(DISTINCT cookieid) AS nums,2 AS GROUPING__ID FROM cookie_info GROUP BY day
 UNION ALL
 SELECT month,day,COUNT(DISTINCT cookieid) AS nums,3 AS GROUPING__ID FROM cookie_info GROUP BY month,day;
-0: jdbc:hive2://server4:10000> SELECT
-. . . . . . . . . . . . . . .>     month,
-. . . . . . . . . . . . . . .>     day,
-. . . . . . . . . . . . . . .>     COUNT(DISTINCT cookieid) AS nums,
-. . . . . . . . . . . . . . .>     GROUPING__ID
-. . . . . . . . . . . . . . .> FROM cookie_info
-. . . . . . . . . . . . . . .> GROUP BY month,day
-. . . . . . . . . . . . . . .> WITH CUBE
-. . . . . . . . . . . . . . .> ORDER BY GROUPING__ID;
-WARN  : Hive-on-MR is deprecated in Hive 2 and may not be available in the future versions. Consider using a different execution engine (i.e. spark, tez) or using Hive 1.X releases.
-+----------+-------------+-------+---------------+
-|  month   |     day     | nums  | grouping__id  |
-+----------+-------------+-------+---------------+
-| 2018-03  | 2018-03-10  | 4     | 0             |
-| 2018-04  | 2018-04-16  | 2     | 0             |
-| 2018-04  | 2018-04-13  | 3     | 0             |
-| 2018-04  | 2018-04-12  | 2     | 0             |
-| 2018-04  | 2018-04-15  | 2     | 0             |
-| 2018-03  | 2018-03-12  | 1     | 0             |
-| 2018-03  | NULL        | 5     | 1             |
-| 2018-04  | NULL        | 6     | 1             |
-| NULL     | 2018-04-16  | 2     | 2             |
-| NULL     | 2018-04-15  | 2     | 2             |
-| NULL     | 2018-04-13  | 3     | 2             |
-| NULL     | 2018-04-12  | 2     | 2             |
-| NULL     | 2018-03-12  | 1     | 2             |
-| NULL     | 2018-03-10  | 4     | 2             |
-| NULL     | NULL        | 7     | 3             |
-+----------+-------------+-------+---------------+
+
 
 
 --rollup-------------
@@ -159,42 +131,3 @@ FROM cookie_info
 GROUP BY month,day
 WITH ROLLUP
 ORDER BY GROUPING__ID;
-
---把month和day调换顺序，则以day维度进行层级聚合：
-SELECT
-    day,
-    month,
-    COUNT(DISTINCT cookieid) AS uv,
-    GROUPING__ID
-FROM cookie_info
-GROUP BY day,month
-WITH ROLLUP
-ORDER BY GROUPING__ID;
-0: jdbc:hive2://server4:10000> SELECT
-. . . . . . . . . . . . . . .>     month,
-. . . . . . . . . . . . . . .>     day,
-. . . . . . . . . . . . . . .>     COUNT(DISTINCT cookieid) AS nums,
-. . . . . . . . . . . . . . .>     GROUPING__ID
-. . . . . . . . . . . . . . .> FROM cookie_info
-. . . . . . . . . . . . . . .> GROUP BY month,day
-. . . . . . . . . . . . . . .> WITH ROLLUP
-. . . . . . . . . . . . . . .> ORDER BY GROUPING__ID;
-WARN  : Hive-on-MR is deprecated in Hive 2 and may not be available in the future versions. Consider using a different execution engine (i.e. spark, tez) or using Hive 1.X releases.
-+----------+-------------+-------+---------------+
-|  month   |     day     | nums  | grouping__id  |
-+----------+-------------+-------+---------------+
-| 2018-04  | 2018-04-16  | 2     | 0             |
-| 2018-04  | 2018-04-15  | 2     | 0             |
-| 2018-04  | 2018-04-13  | 3     | 0             |
-| 2018-04  | 2018-04-12  | 2     | 0             |
-| 2018-03  | 2018-03-12  | 1     | 0             |
-| 2018-03  | 2018-03-10  | 4     | 0             |
-| 2018-04  | NULL        | 6     | 1             |
-| 2018-03  | NULL        | 5     | 1             |
-| NULL     | NULL        | 7     | 3             |
-+----------+-------------+-------+---------------+
-
--------------------------------------------------------------------
---验证测试count(*),count(1),count(字段)
-select * from t_all_hero_part_dynamic where role ="archer";
-select count(*),count(1),count(role_assist) from t_all_hero_part_dynamic where role ="archer";
